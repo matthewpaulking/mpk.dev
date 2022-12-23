@@ -5,9 +5,8 @@ import image from "@astrojs/image";
 import sitemap from "@astrojs/sitemap";
 import prefetch from "@astrojs/prefetch";
 
-// https://astro.build/config
 export default defineConfig({
-	site: "https://www.astro-theme-cactus.netlify.app",
+	site: "https://www.mpk.dev",
 	markdown: {
 		shikiConfig: {
 			theme: "dracula",
