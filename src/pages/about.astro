@@ -1,48 +1,31 @@
 ---
 import PageLayout from "@/layouts/Base";
-import { Image } from "@astrojs/image/components";
-import aboutImg from "../assets/about-astro.png";
 
 const meta = {
 	title: "About",
-	description: "I'm a starter theme for Astro.build",
+	description:
+		"I'm a conservation biologist focused on desert ecosystems, and a second career developer building web apps with Laravel and Vue.",
 };
 ---
 
 <PageLayout meta={meta}>
 	<div class="space-y-6">
-		<h1 class="title">About</h1>
+		<h1 class="title">Allow me to introduce myself</h1>
+		<p>Hi, I’m Matt. Thanks for coming to my website!</p>
 		<p>
-			Hi, I’m a starter Astro. I’m particularly great for getting you started with your own blogging
-			website.
+			I love web development. I mostly use Laravel, Vue, and Postgres to build things, with a
+			healthy dose of R for data wrangling. I work at the intersection of conservation biology and
+			tech, building tools to enable folks to do better conservation.
 		</p>
-		<div class="flex justify-center">
-			<Image
-				src={aboutImg}
-				alt="A cartoon cactus looking at the 'Astro.build' logo"
-				loading="eager"
-			/>
-		</div>
-		<p>Here are my some of my awesome built in features:</p>
-		<ul class="list-inside list-disc">
-			<li>I'm ultra fast as I'm a static site</li>
-			<li>I'm fully responsive</li>
-			<li>I come with a light and dark mode</li>
-			<li>I'm easy to customise and add additional content</li>
-			<li>I have Tailwind CSS styling</li>
-			<li>Shiki code syntax highlighting</li>
-		</ul>
 		<p>
-			Clone or fork my
-			<a
-				class="cactus-link inline-block"
-				href="https://github.com/chrismwilliams/astro-cactus"
+			I'm a second career developer. My career started off in plant ecology, then graduate school
+			for paleoclimatology (you can read my thesis <a
+				href="https://drive.google.com/file/d/1tePK6T9n6Qk-9wj2A_PCTut47dtF3CPO/view?usp=sharing"
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="github repository"
-			>
-				repo
-			</a> if you like me!
+				class="underline">here</a
+			> if you're so inclined). Now, I mostly focus on building internal tools for wildlife data management.
 		</p>
+		<p></p>
 	</div>
 </PageLayout>

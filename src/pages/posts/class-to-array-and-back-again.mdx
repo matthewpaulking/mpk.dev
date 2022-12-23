@@ -1,0 +1,38 @@
+---
+layout: "@/layouts/BlogPost"
+title: "Neovim: PHP class property to array and back again"
+publishDate: 23 Dec 2022
+description: A handy keymap when I forget if some data is an object or an array
+tags: ["neovim"]
+---
+
+import { Image } from "@astrojs/image/components";
+
+## The problem
+
+When passing around a lot of data collections, sometimes I'll assume something
+is an object, when it's actually an array.
+
+```php
+$climbingGear->carabiners->lockers;  // ❌
+$climbingGear['carabiners']['lockers']; // this is what it actually is
+```
+
+This is always a pain to fix. Usually I'll make a quick macro to surround the
+property with quotes and brackets, then finally remove the arrow. But now I've
+got a much more efficient way. Behold!
+
+## The solution
+
+<img
+	src="https://res.cloudinary.com/dawwvmppi/video/upload/ac_none,c_scale,w_1080/e_loop/v1671778744/php-class-to-array-neovim.gif"
+	alt="Screen capture showing neovim editor, changing php class proprties to array"
+	width="1080"
+	height="608"
+/>
+
+```lua
+keymap('n', '<leader>cta', "<cmd>s/\\(->\\)\\(\\w*\\)/['\\2']/g<cr>")
+
+keymap('n', '<leader>atc', "<cmd>s/\\(\\['\\)\\(\\w*\\)\\('\\]\\)/->\\2/g<cr>")
+```

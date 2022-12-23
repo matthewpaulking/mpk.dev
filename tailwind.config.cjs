@@ -57,6 +57,7 @@ module.exports = {
 							fontWeight: "700",
 						},
 						code: {
+							overflow: "scroll",
 							border: "1px dotted #666",
 							borderRadius: "2px",
 						},
