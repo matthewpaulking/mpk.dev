@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import netlify from "@astrojs/netlify/functions";
 import fs from "fs";
 import mdx from "@astrojs/mdx";
 import tailwind from "@astrojs/tailwind";
@@ -11,6 +12,8 @@ import { remarkReadingTime } from "./src/utils/remark-reading-time.mjs";
 // https://astro.build/config
 export default defineConfig({
 	// ! Please remember to replace the following site property with your own domain
+	output: "server",
+	adapter: netlify(),
 	site: "https://mpk.dev",
 	markdown: {
 		remarkPlugins: [remarkUnwrapImages, remarkReadingTime],
