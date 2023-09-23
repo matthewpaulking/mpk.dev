@@ -1,29 +1,39 @@
-import type { MDXInstance } from "@/data/shared";
-import type { Post } from "@/data/posts";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
-export function sortMDByDate(posts: MDXInstance<Post>[] = []) {
-	return posts.sort(
-		(a, b) =>
-			new Date(b.frontmatter.publishDate).valueOf() - new Date(a.frontmatter.publishDate).valueOf()
-	);
-}
-
-export function getUniqueTags(posts: MDXInstance<Post>[] = []) {
-	const uniqueTags = new Set<string>();
-	posts.forEach((post) => {
-		post.frontmatter.tags?.map((tag) => uniqueTags.add(tag.toLowerCase()));
+/** Note: this function filters out draft posts based on the environment */
+export async function getAllPosts() {
+	return await getCollection("post", ({ data }) => {
+		return import.meta.env.PROD ? data.draft !== true : true;
 	});
-	return [...uniqueTags];
 }
 
-export function getUniqueTagsWithCount(posts: MDXInstance<Post>[] = []): {
-	[key: string]: number;
-} {
-	return posts.reduce((prev, post) => {
-		const runningTags: { [key: string]: number } = { ...prev };
-		post.frontmatter.tags?.forEach(function (tag) {
-			runningTags[tag] = (runningTags[tag] || 0) + 1;
-		});
-		return runningTags;
-	}, {});
+export function sortMDByDate(posts: Array<CollectionEntry<"post">>) {
+	return posts.sort((a, b) => {
+		const aDate = new Date(a.data.updatedDate ?? a.data.publishDate).valueOf();
+		const bDate = new Date(b.data.updatedDate ?? b.data.publishDate).valueOf();
+		return bDate - aDate;
+	});
+}
+
+/** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
+export function getAllTags(posts: Array<CollectionEntry<"post">>) {
+	return posts.flatMap((post) => [...post.data.tags]);
+}
+
+/** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
+export function getUniqueTags(posts: Array<CollectionEntry<"post">>) {
+	return [...new Set(getAllTags(posts))];
+}
+
+/** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
+export function getUniqueTagsWithCount(
+	posts: Array<CollectionEntry<"post">>,
+): Array<[string, number]> {
+	return [
+		...getAllTags(posts).reduce(
+			(acc, t) => acc.set(t, (acc.get(t) || 0) + 1),
+			new Map<string, number>(),
+		),
+	].sort((a, b) => b[1] - a[1]);
 }

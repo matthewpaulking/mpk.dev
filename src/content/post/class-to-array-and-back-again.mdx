@@ -1,12 +1,9 @@
 ---
-layout: "@/layouts/BlogPost"
 title: "Neovim: PHP class property to array and back again"
 publishDate: 23 Dec 2022
 description: A handy keymap when I forget if some data is an object or an array
 tags: ["neovim"]
 ---
-
-import { Image } from "@astrojs/image/components";
 
 ## The problem
 
@@ -24,12 +21,7 @@ got a much more efficient way. Behold!
 
 ## The solution
 
-<img
-	src="https://res.cloudinary.com/dawwvmppi/image/upload/v1671819629/neovim-php-class-to-array_lnwvvv.gif"
-	alt="Screen capture showing neovim editor, changing php class proprties to array"
-	width="586"
-	height="236"
-/>
+![Screen capture showing neovim editor, changing php class proprties to array](https://res.cloudinary.com/dawwvmppi/image/upload/v1671819629/neovim-php-class-to-array_lnwvvv.gif)
 
 ```lua
 keymap('n', '<leader>cta', "<cmd>s/\\(->\\)\\(\\w*\\)/['\\2']/g<cr>")

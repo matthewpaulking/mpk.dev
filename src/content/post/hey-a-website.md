@@ -1,12 +1,9 @@
 ---
-layout: "@/layouts/BlogPost"
 title: Hey, a website!
 publishDate: 22 Dec 2022
 description: Matt used an Astro theme. It's super effective!
 tags: ["astro"]
 ---
-
-import { Image } from "@astrojs/image/components";
 
 ## It's alive!
 
@@ -14,9 +11,4 @@ I've dithered for a long time on building a personal website, but I found a real
 
 Shout out to https://github.com/chrismwilliams/astro-theme-cactus. Speaking of which, here's a relevant picture I took.
 
-<Image
-	src="https://res.cloudinary.com/dawwvmppi/image/upload/c_scale,f_webp,w_550/v1671771820/PXL_20220524_011332202_s2a46f.jpg"
-	alt="A saguaro cactus atop South Mountain in Phoenix, AZ"
-	width={550}
-	height={414}
-/>
+![A saguaro cactus atop South Mountain in Phoenix, AZ](https://res.cloudinary.com/dawwvmppi/image/upload/c_scale,f_webp,w_550/v1671771820/PXL_20220524_011332202_s2a46f.jpg)

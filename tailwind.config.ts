@@ -1,8 +1,8 @@
-const { fontFamily } = require("tailwindcss/defaultTheme");
-const plugin = require("tailwindcss/plugin");
+import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
 	content: ["./src/**/*.{astro,html,js,jsx,md,svelte,ts,tsx,vue}"],
 	darkMode: "class",
 	corePlugins: {
@@ -20,11 +20,12 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				bgColor: "var(--theme-bg)",
-				textColor: "var(--theme-text)",
-				link: "var(--theme-link)",
-				accent: "var(--theme-accent)",
-				"accent-2": "var(--theme-accent-2)",
+				bgColor: "hsl(var(--theme-bg) / <alpha-value>)",
+				textColor: "hsl(var(--theme-text) / <alpha-value>)",
+				link: "hsl(var(--theme-link) / <alpha-value>)",
+				accent: "hsl(var(--theme-accent) / <alpha-value>)",
+				"accent-2": "hsl(var(--theme-accent-2) / <alpha-value>)",
+				quote: "hsl(var(--theme-quote) / <alpha-value>)",
 			},
 			fontFamily: {
 				// Add any custom fonts here
@@ -34,16 +35,19 @@ module.exports = {
 			transitionProperty: {
 				height: "height",
 			},
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			// Remove above once tailwindcss exposes theme type
 			typography: (theme) => ({
 				cactus: {
 					css: {
-						"--tw-prose-body": "var(--theme-text)",
-						"--tw-prose-headings": "var(--theme-accent-2)",
-						"--tw-prose-links": "var(--theme-text)",
-						"--tw-prose-bold": "var(--theme-text)",
-						"--tw-prose-bullets": "var(--theme-text)",
-						"--tw-prose-quotes": "var(--theme-quote)",
-						"--tw-prose-code": "var(--theme-text)",
+						"--tw-prose-body": theme("colors.textColor / 1"),
+						"--tw-prose-headings": theme("colors.accent-2 / 1"),
+						"--tw-prose-links": theme("colors.textColor / 1"),
+						"--tw-prose-bold": theme("colors.textColor / 1"),
+						"--tw-prose-bullets": theme("colors.textColor / 1"),
+						"--tw-prose-quotes": theme("colors.quote / 1"),
+						"--tw-prose-code": theme("colors.textColor / 1"),
 						"--tw-prose-hr": "0.5px dashed #666",
 						"--tw-prose-th-borders": "#666",
 					},
@@ -51,18 +55,17 @@ module.exports = {
 				DEFAULT: {
 					css: {
 						a: {
-							"@apply cactus-link": "",
+							"@apply cactus-link no-underline": "",
 						},
 						strong: {
 							fontWeight: "700",
 						},
 						code: {
-							overflow: "scroll",
 							border: "1px dotted #666",
 							borderRadius: "2px",
 						},
 						blockquote: {
-							borderLeftWidth: "none",
+							borderLeftWidth: "0",
 						},
 						hr: {
 							borderTopStyle: "dashed",
@@ -80,6 +83,21 @@ module.exports = {
 						tfoot: {
 							borderTop: "1px dashed #666",
 						},
+						sup: {
+							"@apply ms-0.5": "",
+							a: {
+								"@apply bg-none": "",
+								"&:hover": {
+									"@apply text-link no-underline bg-none": "",
+								},
+								"&:before": {
+									content: "'['",
+								},
+								"&:after": {
+									content: "']'",
+								},
+							},
+						},
 					},
 				},
 				sm: {
@@ -95,21 +113,16 @@ module.exports = {
 	},
 	plugins: [
 		require("@tailwindcss/typography"),
-		require("@tailwindcss/line-clamp"),
 		require("@tailwindcss/aspect-ratio"),
 		plugin(function ({ addComponents }) {
 			addComponents({
 				".cactus-link": {
-					"@apply relative py-2 underline underline-offset-4 decoration-2 decoration-link sm:no-underline sm:py-0":
-						{},
-					"@media (min-width: 640px)": {
-						"&:hover": {
-							"@apply sm:after:h-0.5 sm:after:bg-link": {},
-						},
-						"&::after": {
-							"@apply absolute bottom-0 inset-x-0 block content-[''] h-[1px] bg-textColor motion-safe:transition-height ease-in-out":
-								{},
-						},
+					"@apply bg-[size:100%_6px] bg-bottom bg-repeat-x": {},
+					backgroundImage:
+						"linear-gradient(transparent,transparent 5px,hsl(var(--theme-text)) 5px,hsl(var(--theme-text)))",
+					"&:hover": {
+						backgroundImage:
+							"linear-gradient(transparent,transparent 4px,hsl(var(--theme-link)) 4px,hsl(var(--theme-link)))",
 					},
 				},
 				".title": {
@@ -118,4 +131,4 @@ module.exports = {
 			});
 		}),
 	],
-};
+} satisfies Config;

@@ -1,24 +1,21 @@
 ---
-import type { IElement, MDXInstance } from "@/data/shared";
-import type { Post } from "@/data/posts";
-import { getFormattedDate } from "@/utils";
+import type { CollectionEntry } from "astro:content";
+import type { HTMLTag, Polymorphic } from "astro/types";
+import FormattedDate from "../FormattedDate.astro";
 
-interface Props extends IElement {
-	post: MDXInstance<Post>;
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
+	post: CollectionEntry<"post">;
 	withDesc?: boolean;
-}
+};
 
-const { post, as: Element = "div", withDesc = false } = Astro.props;
-const { publishDate = "" } = post.frontmatter;
-const date = new Date(publishDate);
-const datetime = date.toISOString();
-const postDate = getFormattedDate(date, { month: "short" });
+const { post, as: Tag = "div", withDesc = false } = Astro.props;
+const postDate = post.data.updatedDate ?? post.data.publishDate;
 ---
 
-<time datetime={datetime} class="min-w-[120px] text-gray-500">{postDate}</time>
-<Element>
-	<a href={post.url} class="cactus-link" rel="prefetch">
-		{post.frontmatter.title}
+<FormattedDate date={postDate} class="min-w-[120px] text-gray-500" />
+<Tag>
+	<a href={`/posts/${post.slug}/`} class="cactus-link" rel="prefetch">
+		{post.data.title}
 	</a>
-</Element>
-{withDesc && <q class="block italic line-clamp-3">{post.frontmatter.description}</q>}
+</Tag>
+{withDesc && <q class="line-clamp-3 block italic">{post.data.description}</q>}
